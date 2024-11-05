@@ -45,12 +45,25 @@ export class Maps {
     */
 
     public addMarker(mapplable: Mappable): void {
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
             map: this.CustomMap,
             position: {
                 lat: mapplable.location.lat,
                 lng: mapplable.location.lng,
             },
         });
+
+        this.addInfoWindow(mapplable, marker);
+    }
+
+
+    public addInfoWindow(mapplable: Mappable, marker: google.maps.Marker): void {
+        marker.addListener('click', () => {
+            const context = mapplable.markerContent();
+            const infoWindow = new google.maps.InfoWindow({
+                content: context
+            });
+            infoWindow.open(this.CustomMap, marker);
+        })
     }
 }
